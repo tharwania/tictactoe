@@ -1,24 +1,37 @@
 var HEIGHT = 500;
 var WIDTH = 500;
-var TILES = 10;
-var WIN_DIOGNOL = 5;
+var TILES = 5;
+var WIN_DIOGNOL = 4;
 
 var TILE_HEGHT = HEIGHT / TILES;
 var TILE_WIDTH = WIDTH / TILES;
 
-var mainCanvas = document.getElementById('mainCanvas');
-var ctx = mainCanvas.getContext("2d");
+function startGame(){
+	drawboard();
+}
+
+function drawboard()
+{
+	var mainCanvas = document.getElementById('mainCanvas');
+	var button = document.getElementById('firstButton');
+	button.style.display = "none";
+	mainCanvas.style.display = "block";
+	ctx = mainCanvas.getContext("2d");
 
 // Draw Tiles
-for(i = 1; i < TILES; i++){
-	ctx.moveTo(HEIGHT/ TILES * i, 0);
-	ctx.lineTo(HEIGHT/ TILES * i, WIDTH);
-	ctx.stroke();
+	for(i = 1; i < TILES; i++){
+		
+		ctx.moveTo(HEIGHT/ TILES * i, 0);
+		ctx.lineTo(HEIGHT/ TILES * i, WIDTH);
+		ctx.stroke();
 
-	ctx.moveTo(0, WIDTH / TILES * i);
-	ctx.lineTo(HEIGHT, WIDTH/ TILES * i);
-	ctx.stroke();
+		ctx.moveTo(0, WIDTH / TILES * i);
+		ctx.lineTo(HEIGHT, WIDTH/ TILES * i);
+		ctx.stroke();
+	}
 }
+
+
 
 function getColumnIndex(x, y){
 	var a = 0;
@@ -143,8 +156,11 @@ var mainArray =  createArray(TILES, TILES);
 
 
 mainCanvas.onclick = function(e){
-	var arrayIndex = getColumnIndex(e.x, e.y);
+	var arrayIndex = getColumnIndex(e.layerX, e.layerY);
+	runAMove(arrayIndex);
+}
 
+function runAMove(arrayIndex){
 	var drawColor = turn ? 'green' : 'red';
 	mainArray[arrayIndex.x][arrayIndex.y] = turn;
 	drawInTheBox(arrayIndex, drawColor)
@@ -157,3 +173,40 @@ mainCanvas.onclick = function(e){
 }
 
 
+function getBestMove(gameArray){
+	var myMove = true;
+	var otherMove = !myMove;
+	while(getEmptyTilesCount(gameArray) > 0){
+		var index = getFirstEmptyTile(gameArray);	
+		gameArray[index.x][index.y] = myMove;
+
+	}
+	
+
+}
+
+function getFirstEmptyTile(gameArray){
+	for(i = 0; i < gameArray.length; i++){
+		for(j = 0; j < gameArray[i].length; j++){
+			if(gameArray[i][j] === undefined){
+				return {
+					x: i,
+					y: j
+				};
+			}
+		}
+	}
+}
+
+function getEmptyTilesCount(gameArray){
+	var count = 0;
+	for(i = 0; i < gameArray.length; i++){
+		for(j = 0; j < gameArray[i].length; j++){
+			if(gameArray[i][j] === undefined){
+				count++;
+			}
+		}
+	}
+
+	return count;
+}

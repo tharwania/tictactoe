@@ -1,8 +1,26 @@
 <!DOCTYPE html>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <html>
-<body>
-
-<canvas id="mainCanvas" width="500" height="500" style="border:1px solid #000000;"></canvas>
+<head>
+	<style type="text/css">
+		.center {
+  			margin: auto;
+ 			width: 50%;
+  			border: 3px solid green;
+  			padding: 10px;
+		}
+		.centeral {
+  			margin: auto;
+		}
+	</style>
+	</head>
+<body class="center">
+<button id="firstButton" class="centeral" onclick="startGame()">
+	Start Game
+</button>
+<canvas id="mainCanvas" class="centeral" width="500" height="500" style="border:1px solid #000000;display: none;">
+	
+</canvas>
 
 <script type="text/javascript" src="main.js"></script>
 </body>
